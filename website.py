@@ -58,23 +58,27 @@ def main():
 
         # Display the uploaded image
         display_img = cv2.imread(file_path)
-        display_img = cv2.cvtColor(display_img, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB
-        st.image(display_img, caption='Uploaded Image', use_column_width=True)
+        is_success, im_buf_arr = cv2.imencode(".png", display_img)
+        byte_im = im_buf_arr.tobytes()
+
+        # Display the uploaded image with specified dimensions
+        st.image(byte_im, caption='Uploaded Image', width=400)
 
         # Make predictions
         Frac_pred, Xray_pred = predict_image(file_path)
 
         # Interpret predictions
         if Xray_pred < 70:
-            st.write("Image is not an X-ray. Please upload an X-ray image.")
+            st.write(f"Confidence tha image is not an X-ray : {100-Xray_pred}%")
+            st.write("Please upload an X-ray image.")
         else:
             if Frac_pred < 70:
-                st.write("The X-ray is not of a fractured bone.")
-                st.write(f"X-ray Prediction Confidence: {Xray_pred}%")
-                st.write(f"Fracture Prediction Confidence: {Frac_pred}%")
+                st.write(f"Confidence tha image is an X-ray : {Xray_pred}%")
+                st.write(f"Confidence that image is not a Fracture : {100-Frac_pred}%")
             else:
                 st.write("The X-ray is of a fractured bone.")
-                st.write(f"Confidence: {(100 - Xray_pred).round(3)}%")
+                st.write(f"Confidence tha image is an X-ray: {Xray_pred}%")
+                st.write(f"Confidence that image is a Fracture : {Frac_pred}%")
 
 if __name__ == "__main__":
     if not os.path.exists("temp_dir"):
