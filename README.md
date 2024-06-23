@@ -1,4 +1,4 @@
-<h1>Running the app</h1>
+## Running the app ##
 The app uses pretrained models to classify images so the app can be used directly.<br> 
 The XrayOrNot.tflite model determines whether the image is Xray or not.<br>
 The FracOrNot.tflite model determines whether the bone in the Xray is fractured or not.
