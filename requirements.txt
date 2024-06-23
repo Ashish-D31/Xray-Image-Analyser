@@ -1,0 +1,5 @@
+numpy
+keras
+tensorflow==2.17.0rc0
+streamlit
+opencv-python
